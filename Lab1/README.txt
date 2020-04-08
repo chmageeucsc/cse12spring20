@@ -8,7 +8,7 @@ In this lab, we make circuits and use logic gates in Multimedia Logic.
 -----------
 FILES
 -
-Lab1.li
+Lab1.lgi
 
 This file includes the altered template that was given to us. It has part A, 
 part B, and part C on different pages respectively.
