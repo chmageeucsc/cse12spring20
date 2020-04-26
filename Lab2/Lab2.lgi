@@ -204,23 +204,6 @@ update
 1 704 254 733 236
 1 52 263 61 284
 38 2
-22 294 42 484 22 0 \NUL
-Placeholder signal/recievers
-22 18 480 388 460 0 \NUL
-These are only present so circuit simulates without error
-22 18 504 290 484 0 \NUL
-Remove these once logic is implemented
-22 18 528 266 508 0 \NUL
-You are permitted to modify this page
-22 12 78 52 58 0 \NUL
-Lab 2
-22 12 30 99 10 0 \NUL
-Gee, Chantel
-22 12 54 75 34 0 \NUL
-chmagee
-22 12 102 149 82 0 \NUL
-CSE 12, Spring 2020
-38 3
 22 12 78 52 58 0 \NUL
 Lab 2
 22 12 30 99 10 0 \NUL
@@ -289,7 +272,7 @@ clear is connected to CLR and sets the registers to 0.
 1 492 250 517 251
 1 505 292 522 297
 1 553 338 527 337
-38 4
+38 3
 22 12 78 52 58 0 \NUL
 Lab 2
 22 12 30 99 10 0 \NUL
@@ -338,10 +321,12 @@ sel
 31 85 491 134 406 0 2
 14 33 347 82 298
 31 93 324 142 239 0 2
-22 38 166 365 146 0 \NUL
-If the select switch is 1, the alu output will appear.
+22 38 166 571 146 0 \NUL
+If the select switch is 1, the alu output will be stored in the user's chosen register.
 22 38 188 545 168 0 \NUL
 If the select switch is 0, the 4 registers will update based on the keypad input.
+22 37 144 269 124 0 \NUL
+r# is the input from the write select.
 1 433 481 457 477
 1 434 460 457 471
 1 410 277 442 273
@@ -362,7 +347,7 @@ If the select switch is 0, the 4 registers will update based on the keypad input
 1 442 309 427 311
 1 86 487 71 489
 1 94 320 79 322
-38 5
+38 4
 19 394 215 453 196 0
 r3
 19 466 337 525 318 0
@@ -501,7 +486,7 @@ CLR sets all values to 0 if pushed on the first page.
 1 649 476 638 487
 1 549 375 537 387
 1 482 255 474 269
-38 6
+38 5
 19 417 224 476 205 0
 r3
 19 58 196 117 177 0
@@ -640,7 +625,7 @@ CLR sets all values to 0 if pushed on the first page.
 1 270 450 259 461
 1 197 355 185 367
 1 150 239 142 253
-38 7
+38 6
 22 12 78 52 58 0 \NUL
 Lab 2
 22 12 30 99 10 0 \NUL
@@ -747,7 +732,7 @@ in1_0
 1 237 475 263 462
 1 688 502 704 501
 1 683 304 698 304
-38 8
+38 7
 22 12 78 52 58 0 \NUL
 Lab 2
 22 12 30 99 10 0 \NUL
@@ -854,7 +839,7 @@ The mux receives input about which register bit to store in which read address f
 1 264 477 249 479
 1 705 481 688 481
 1 661 245 648 245
-38 9
+38 8
 22 12 78 52 58 0 \NUL
 Lab 2
 22 12 30 99 10 0 \NUL
@@ -927,6 +912,10 @@ in1_0
 in1_1
 19 406 547 465 528 0
 in1_0
+22 38 155 652 135 0 \NUL
+The output from the MUXes are stored and 'rotated' to match the rotations an ALU would make.
+22 39 180 450 160 0 \NUL
+The outputs are then stored in the ALU Output on the first page.
 1 125 355 152 340
 1 130 549 173 528
 1 506 356 533 341
@@ -959,6 +948,7 @@ in1_0
 1 217 293 197 298
 1 218 486 247 484
 1 593 488 616 489
+38 9
 38 10
 22 12 78 52 58 0 \NUL
 Lab 2
