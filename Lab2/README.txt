@@ -21,3 +21,4 @@ This file includes the Multimedia Logic file with the circuit.
 INSTRUCTIONS
 
 This program is intended to be run using Multimedia Logic. Enter values into the keypad and chose which values you want to rotate.
+DO NOT push update if the store select is set to 1.
