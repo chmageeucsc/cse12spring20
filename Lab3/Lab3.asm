@@ -23,6 +23,11 @@ main:
     li $v0, 1
     move $a0, $s0
     syscall
+    
+    #Print a new line after the output
+    li $v0, 4
+    la $a0, newLine
+    syscall
 
     # Exit the program
     li $v0, 10
@@ -31,3 +36,4 @@ main:
 .data
 prompt: .asciiz "Enter the height of the pattern (must be greater than 0): "
 output: .asciiz "\nYou typed the number "
+newLine: .asciiz "\n"
