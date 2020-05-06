@@ -25,8 +25,7 @@ count = 0
 total = useIn*2
 
 while lines != 0 :
-    curl = curl + 1
-    for count in range (0, curl) :
+    for count in range (0, lines) :
         count = count + 1
         print (count, end = "\t")
         while stars > 0 :
@@ -34,14 +33,8 @@ while lines != 0 :
             stars = stars - 1
         # end while
         print (count)
-        count = count - 1
+        #count = count - 1
         lines = lines - 1
         stars = (lines - 1) * 2
 
-for i in range (1, useIn+1) :
-    for j in range (1, i+1) :
-        print (num, end = "\t")
-        num = num + 1
-    # end for
-    print()
-# end for
+
