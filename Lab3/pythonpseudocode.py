@@ -6,35 +6,31 @@ useIn = int(input("Enter the height of the pattern (must be greater than 0): "))
 
 while useIn <= 0 :
     print("Invalid entry!")
-    useIn = int(input("Enter the height of the pattern (must be greater than 0):\t"))
+    useIn = int(input("Enter the height of the pattern (must be greater than 0): "))
 # end while
 
-#print("Nice.")
+print()
 
-# lines = number of lines in the triangle
-lines = useIn
-# stars = number of asterisks in the line
-stars = (lines - 1) * 2
-# current line
-curl = 0
-# num = number of 
 num = 1
-# count = the numbers in each line (ex: 2,3,3,2)
-count = 0
-# total = total number of characters in a line
-total = useIn*2
-
-while lines != 0 :
-    for count in range (0, lines) :
-        count = count + 1
-        print (count, end = "\t")
-        while stars > 0 :
-            print ("*", end = "\t")
-            stars = stars - 1
-        # end while
-        print (count)
-        #count = count - 1
-        lines = lines - 1
-        stars = (lines - 1) * 2
-
-
+stars = (useIn-1) * 2
+for row in range (1, useIn+1) :
+    mirror = row
+    for col in range (1, row+1) :
+        print (num, end = "\t")
+        num = num + 1
+        mirror = num -1
+    # end for
+    while stars > 0 :
+        print ("*", end = "\t")
+        stars = stars - 1
+    # end while
+    useIn = useIn-1
+    stars = (useIn-1) * 2
+    for col in range (1, row) :
+        print (mirror, end = "\t")
+        mirror = mirror - 1
+    # end for
+    for col in range (row, row+1) :
+        print (mirror)
+    print()
+# end for
