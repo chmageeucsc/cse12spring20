@@ -66,18 +66,18 @@ main:
 
 	# end of beginLoop	
 	
-	# initialize $s2 as number of stars
-    	subi $s2, $s0, 1
-    	mul $s2, $s2, 2
-    	
-    	# initialize $s4 as useIn+1
-    	addi $s4, $s0, 1
-    	
-    	# initialize $s5 as row+1
-    	addi $s5, $s3, 1
-    	
 	# initialize starting number for pattern
 	patternLoop: 
+	
+		# initialize $s2 as number of stars
+    		subi $s2, $s0, 1
+    		mul $s2, $s2, 2
+    	
+    		# initialize $s4 as useIn+1
+    		addi $s4, $s0, 1
+    	
+    		# initialize $s5 as row+1
+    		addi $s5, $s3, 1
     		
     		#if row = useIn, move to outputText
     		beq $s3, $s4, outputText
@@ -85,6 +85,9 @@ main:
     		# set $s3 to $s7 (mirror = row)
     		add $s7, $s3, $0
     		
+    		# check each row
+		addi $s3, $s3, 1
+	
     		numLoop:
     			
     			#if col = row+1, move to starLoop
@@ -94,6 +97,9 @@ main:
  			la $a0, ($s1)
  			li $v0, 1
  			syscall
+ 			la $a0, 0x9
+ 			li $v0, 11
+ 			syscall
  			
  			# num = num + 1
  			addi $s1, $s1, 1
@@ -101,7 +107,8 @@ main:
  			# mirror = num - 1
  			subi $s7, $s1, 1
  			
- 			#
+ 			# check next col
+ 			addi $s6, $s6, 1
  			
  			b numLoop
     			
@@ -111,8 +118,11 @@ main:
     			beq $s2, $0, numCont
     			
     			# print stars					#### PLEASE ADD TAB ###
- 			la $a0, ($s2)
- 			li $v0, 1
+ 			la $a0, 0x2A
+ 			li $v0, 11
+ 			syscall
+ 			la $a0, 0x9
+ 			li $v0, 11
  			syscall
  			
  			# stars = stars - 1
@@ -121,11 +131,13 @@ main:
  			b starLoop
  			
  		numCont:
+ 			# set temp for useIn - 1
+ 			add $t2, $s0, $0
  			
  			# useIn = useIn - 1  &  reset stars
- 			sub $s0, $s0, 1
+ 			sub $t2, $s0, 1
  			
- 			subi $s2, $s0, 1
+ 			subi $s2, $t2, 1
     			mul $s2, $s2, 2
     			
     			# for loop of mirrored numbers
@@ -135,21 +147,28 @@ main:
  			la $a0, ($s7)
  			li $v0, 1
  			syscall
+ 			la $a0, 0x9
+ 			li $v0, 11
+ 			syscall
  			
  			# mirror = mirror - 1
  			subi $s7, $s7, 1
+ 			
+ 			# check next column
+ 			addi $s6, $s6, 1
  			
  			b numCont
  			
  		finNum:
  			
- 			# if col = row+1, move to outputText
- 			beq $s6, $s5, outputText
- 			
  			# print mirror
  			la $a0, ($s7)
  			li $v0, 1
- 			syscall
+ 			syscall 			
+ 			
+ 			# if col at row = row+1, move to outputText
+ 			la $s6, ($s3)
+ 			beq $s6, $s5, outputText
     	
     		addi $s3, $s3, 1
     		b patternLoop #loop back
