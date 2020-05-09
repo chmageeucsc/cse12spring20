@@ -1,7 +1,3 @@
-# Program File: Program2-2.asm
-# Author: Charles Kann
-# Program to read an integer number from a user, and
-# print that number back to the console.
 .text
 main:
 	# initialize $s1 as 1 (num)
@@ -33,8 +29,8 @@ main:
     	# Check if the integer is less than or equal to zero (if greater $t0 = 1, else $t0 = 0)
     	# $t0: print error if less than or equal to 0
     	# branch to patternLoop if input is greater than 0
-    	sle $t1, $s0, $zero
-    	beq $t3, $zero, patternLoop
+    	sle $t0, $s0, $0 
+    	beq $t0, $0, initialize
     	
     	# error
     	la $a0, error
@@ -66,9 +62,7 @@ main:
 
 	# end of beginLoop	
 	
-	# initialize starting number for pattern
-	patternLoop: 
-	
+	initialize:
 		# initialize $s2 as number of stars
     		subi $s2, $s0, 1
     		mul $s2, $s2, 2
@@ -86,14 +80,20 @@ main:
     		add $s7, $s3, $0
     		
     		# check each row
-		addi $s3, $s3, 1
+		#addi $s3, $s3, 1
+		
+		b patternLoop
+		
+	patternLoop: 
+	
+		
 	
     		numLoop:
     			
     			#if col = row+1, move to starLoop
     			beq $s6, $s5, starLoop
     			
-    			# print num 					#### PLEASE ADD TAB ###
+    			# print num 
  			la $a0, ($s1)
  			li $v0, 1
  			syscall
@@ -117,7 +117,7 @@ main:
     			# while stars > 0
     			beq $s2, $0, numCont
     			
-    			# print stars					#### PLEASE ADD TAB ###
+    			# print stars
  			la $a0, 0x2A
  			li $v0, 11
  			syscall
@@ -131,19 +131,22 @@ main:
  			b starLoop
  			
  		numCont:
- 			# set temp for useIn - 1
- 			add $t2, $s0, $0
- 			
  			# useIn = useIn - 1  &  reset stars
  			sub $t2, $s0, 1
+ 		
+ 			# set temp for useIn - 1
+ 			add $t2, $s0, $0
  			
  			subi $s2, $t2, 1
     			mul $s2, $s2, 2
     			
+    			# if mirror = 0, print new line and start next row
+    			beq $s7, $0, nextRow
+    			
     			# for loop of mirrored numbers
     			beq $s6, $s3, finNum
     			
-    			# print mirror					#### PLEASE ADD TAB ###
+    			# print mirror
  			la $a0, ($s7)
  			li $v0, 1
  			syscall
@@ -158,19 +161,30 @@ main:
  			addi $s6, $s6, 1
  			
  			b numCont
+ 		
+ 		nextRow:
+ 			la $a0, newLine
+ 			li $v0, 4
+ 			syscall	
  			
+ 			addi $s3, $s3, 1
+ 			b patternLoop
+ 					
  		finNum:
  			
- 			# print mirror
+ 			# print mirror and new line
  			la $a0, ($s7)
  			li $v0, 1
- 			syscall 			
+ 			syscall 
+ 			la $a0, newLine
+ 			li $v0, 4
+ 			syscall		
  			
  			# if col at row = row+1, move to outputText
- 			la $s6, ($s3)
+ 			addi $s3, $s3, 1
  			beq $s6, $s5, outputText
     	
-    		addi $s3, $s3, 1
+    		#addi $s3, $s3, 1
     		b patternLoop #loop back
     	
     	outputText:
@@ -200,4 +214,3 @@ output: .asciiz "\nYou typed the number "
 newLine: .asciiz "\n"
 error: .asciiz "Invalid entry!"
 start: .word 1
-    
