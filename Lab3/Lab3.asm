@@ -1,13 +1,63 @@
+##########################################################################
+# Created by: Gee, Chantel
+# chmagee
+# 10 May 2020
+#
+# Assignment: Lab 3: ASCII-risks (Asterisks)
+# CSE 12, Computer Systems and Assembly Language
+# UC Santa Cruz, Spring 2020
+#
+# Description: This program prints takes the user's input and prints out
+#		Floyd's Triangle forwards and backwards with "*" in
+#		between them.
+#
+# Notes: This program is intended to be run from the MARS IDE.
+#
+##########################################################################
+#
+# PSEUDOCODE
+# useIn = int(input("Enter the height of the pattern (must be greater than 0): "))
+#
+# while useIn <= 0 :
+#    print("Invalid entry!")
+#    useIn = int(input("Enter the height of the pattern (must be greater than 0): "))
+# end while
+#
+# print()
+#
+# num = 1
+# stars = (useIn-1) * 2
+# for row in range (1, useIn+1) :
+#    for col in range (1, row+1) :
+#        print (num, end = "\t")
+#        num = num + 1
+#        mirror = num - 1
+#    # end for
+#    while stars > 0 :
+#        print ("*", end = "\t")
+#        stars = stars - 1
+#    # end while
+#    useIn = useIn-1
+#    stars = (useIn-1) * 2
+#    for col in range (1, row) :
+#        print (mirror, end = "\t")
+#        mirror = mirror - 1
+#    # end for
+#    for col in range (row, row+1) :
+#        print (mirror)
+#    print()
+# # end for
+#
+##########################################################################
+
 .text
-main:
-	# initialize $s1 as 1 (num)
-    	lw $s1, start
-    	
-    	# initialize $s3 as 1 (row)
-    	lw $s3, start
-    	
-    	# initialize $s6 as 1 (col)
-    	lw $s6, start
+main: 
+	# row = 1
+	addi $s1, $0, 1
+	# col = 1
+	addi $s2, $0, 1
+	# count for loop iterations
+	addi $s7, $0, 1
 	
 	# Prompt for the integer to enter
 	# $a0: load address of prompt
@@ -22,218 +72,187 @@ main:
 	li $v0, 5
 	syscall
 	move $s0, $v0
-
-	# loop to check the input
-	beginLoop:
-    
-    	# Check if the integer is less than or equal to zero (if greater $t0 = 1, else $t0 = 0)
-    	# $t0: print error if less than or equal to 0
-    	# branch to patternLoop if input is greater than 0
-    	sle $t0, $s0, $0 
-    	beq $t0, $0, initialize
-    	nop
-    	
-    	# error
-    	la $a0, error
- 	li $v0, 4
- 	syscall
- 	
- 	# print new line
- 	la $a0, newLine
- 	li $v0, 4
- 	syscall
- 		
- 	# print new line
- 	la $a0, newLine
- 	li $v0, 4
- 	syscall
 	
-	# redo prompt
-	la $a0, prompt
-	li $v0, 4
- 	syscall
+	beginLoop:
+		# Check if the integer is less than or equal to zero (if greater $t0 = 1, else $t0 = 0)
+	    	# $t0: print error if less than or equal to 0
+	    	# branch to patternLoop if input is greater than 0
+	    	sle $t0, $s0, $0 
+    		beq $t0, $0, initialize
+    		nop
+    	
+	    	# error
+	    	la $a0, error
+	 	li $v0, 4
+	 	syscall
+	 	
+	 	# print new line
+	 	la $a0, newLine
+	 	li $v0, 4
+	 	syscall
+	
+		# redo prompt
+		la $a0, prompt
+		li $v0, 4
+	 	syscall
  	
- 	# save the new value
- 	li $v0, 5
- 	syscall
-	move $s0, $v0
+ 		# save the new value
+ 		li $v0, 5
+ 		syscall
+		move $s0, $v0
 
-	# RETURN TO START OF LOOP
-	b beginLoop
-	nop
-
-	# end of beginLoop	
+		# RETURN TO START OF LOOP
+		b beginLoop
+		nop
 	
 	initialize:
-		# initialize $s2 as number of stars
-    		subi $s2, $s0, 1
-    		mul $s2, $s2, 2
-    	
-    		# initialize $s4 as useIn+1
-    		addi $s4, $s0, 1
-    	
-    		# initialize $s5 as row+1
-    		addi $s5, $s3, 1
-    		
-    		#if row = useIn + 1, move to outputText
-    		beq $s3, $s4, outputText
-    		nop
-    		
-    		# check each row
-		#addi $s3, $s3, 1
+		# num = 1
+		addi $s4, $0, 1
+		# useIn = useIn + 1
+		addi $s6, $s0, 1
 		
-		b patternLoop
+		# print new line
+	 	la $a0, newLine
+	 	li $v0, 4
+	 	syscall
+	 		
+		b forRow
+
+	# for row in range (1, useIn + 1)
+	forRow:
+		# $s1 = row
+		beq $s1, $s6, exit
 		nop
 		
-	patternLoop: 
-	
-		# reset rows
-		subi $s3, $s3, 1
-	
-    		numLoop:
-    			
-    			#if col = row+1, move to starLoop
-    			beq $s6, $s5, starLoop
-    			nop
-    			
-    			# print num 
- 			la $a0, ($s1)
- 			li $v0, 1
+		# for col in range (1, row + 1)
+		forCol1:
+			# $t1 = row + 1
+			# s2 = col
+			addi $t1, $s1, 1
+			beq $s2, $t1, setStars
+			nop
+		
+			# print (num, end = "\t")
+			la $a0, ($s4)
+	 		li $v0, 1
  			syscall
  			la $a0, 0x9
  			li $v0, 11
  			syscall
- 			
- 			# num = num + 1
- 			addi $s1, $s1, 1
- 			
- 			# mirror = num - 1
- 			subi $s7, $s1, 1
- 			
- 			# check next col
- 			addi $s6, $s6, 1
- 			
- 			# if row = useIn, mirror numbers
- 			beq $s3, $s0, numCont
- 			nop
- 			
- 			b numLoop
- 			nop
-    			
-    		starLoop:
-    			
-    			# while stars > 0
-    			beq $s2, $0, numCont
-    			nop
-    			
-    			# print stars
- 			la $a0, 0x2A
- 			li $v0, 11
- 			syscall
- 			la $a0, 0x9
- 			li $v0, 11
- 			syscall
- 			
- 			# stars = stars - 1
- 			subi $s2, $s2, 1
- 			
- 			b starLoop
- 			nop
- 			
- 		numCont:
- 			# useIn = useIn - 1  &  reset stars
- 			sub $t2, $s0, 1
  		
- 			# set temp for useIn - 1
- 			add $t2, $s0, $0
+ 			# num = num + 1
+ 			addi $s4, $s4, 1
+ 		
+ 			# mirror = num - 1
+ 			# $s5 = mirror
+ 			subi $s5, $s4, 1
  			
- 			subi $s2, $t2, 1
-    			mul $s2, $s2, 2
-    			
-    			# if mirror = 0, print new line and start next row
-    			beq $s7, $0, nextRow
-    			nop
-    			
-    			# for loop of mirrored numbers
-    			beq $s6, $s3, finNum
-    			nop
-    			
-    			# print mirror
- 			la $a0, ($s7)
+ 			# next column, restart loop
+ 			addi $s2, $s2, 1
+ 		
+ 			b forCol1
+ 			nop
+	
+		setStars:
+			# $s3 = stars // stars = (useIn - 1) * 2
+			subi $s3, $s0, 1
+			mul $s3, $s3, 2
+			
+			b whileStars
+			nop
+	
+		# while stars > 0	
+		whileStars:
+			
+			beq $s3, 0, resetStars
+			nop
+		
+			# print ("*", end = "\t")
+			la $a0, 0x2A
+	 		li $v0, 11
+	 		syscall
+	 		la $a0, 0x9
+	 		li $v0, 11
+	 		syscall
+ 		
+	 		# stars = stars - 1
+	 		subi $s3, $s3, 1
+	 		
+	 		#restart loop
+	 		b whileStars
+	 		nop
+		
+		resetStars:
+			# useIn = useIn - 1
+			subi $s0, $s0, 1
+			# stars = (useIn - 1) * 2
+			subi $s3, $s0, 1
+			mul $s3, $s3, 2
+			
+			b resetCol
+			nop
+		
+		resetCol:
+			addi $s2, $0, 1
+			b forCol2
+			nop
+		
+		# for col in range (1, row)
+		forCol2:
+			beq $s2, $s1, forCol3
+			nop
+		
+			# print (mirror, end = "\t")
+			la $a0, ($s5)
  			li $v0, 1
  			syscall
  			la $a0, 0x9
  			li $v0, 11
  			syscall
+ 		
+	 		# mirror = mirror - 1
+ 			subi $s5, $s5, 1
  			
- 			# mirror = mirror - 1
- 			subi $s7, $s7, 1
- 			
- 			# check next column
- 			addi $s6, $s6, 1
- 			
- 			# if column = row, 
- 			beq $s6, $s3, zero
- 			
- 			#b numCont
- 			#nop 
- 			
- 		nextRow:
- 			la $a0, newLine
- 			li $v0, 4
- 			syscall	
- 			
- 			addi $s3, $s3, 1
- 			b initialize
+ 			# next column, restart loop
+ 			addi $s2, $s2, 1
+ 			b forCol2
  			nop
- 					
- 		finNum:
- 			
- 			# print mirror and new line
- 			la $a0, ($s7)
+		
+		# for col in range (row, row + 1)	
+		forCol3:
+			addi $t1, $s1, 1
+			beq $s1, $t1, printLine
+		
+			# print (mirror)
+			la $a0, ($s5)
  			li $v0, 1
- 			syscall 
- 			la $a0, newLine
+ 			syscall
+ 		
+ 			b printLine
+		
+		printLine:
+			# print (), start next row
+			la $a0, newLine
  			li $v0, 4
- 			syscall		
- 			
- 			# if col at row = row+1, move to outputText
- 			addi $s3, $s3, 1
- 			addi $s5, $s5, 1
- 			beq $s6, $s5, outputText
-    			nop
-    			
-    		#addi $s3, $s3, 1
-    		b patternLoop #loop back
-    		nop
-    	zero:
-    		addi $s6, $0, 0
-    		b finNum
-    		
-    	outputText:
-    	
-		# Output the text
-		li $v0, 4
-		la $a0, output
-		syscall
-
-		# Output the number
-		li $v0, 1
-		move $a0, $s0
-		syscall
-    
-		#Print a new line after the output
-		li $v0, 4
-		la $a0, newLine
-		syscall
-
-		# Exit the program
+ 			syscall
+			
+			# reset column for next row
+			addi $s2, $0, 1
+			
+			# counter for numbers printed
+			addi $s7, $s7, 1
+			
+			# next row
+ 			addi $s1, $s1, 1
+ 			b forRow
+ 			nop
+ 		
+	exit:
+	 	# Exit the program
 		li $v0, 10
 		syscall
-
+ 		
 .data
-prompt: .asciiz "Enter the height of the pattern (must be greater than 0): "
-output: .asciiz "\nYou typed the number "
 newLine: .asciiz "\n"
+prompt: .asciiz "Enter the height of the pattern (must be greater than 0):	"
 error: .asciiz "Invalid entry!"
-start: .word 1

@@ -2,7 +2,7 @@
 # basically just pseudocode
 #
 
-useIn = 4 #int(input("Enter the height of the pattern (must be greater than 0): "))
+useIn = int(input("Enter the height of the pattern (must be greater than 0): "))
 
 while useIn <= 0 :
     print("Invalid entry!")
