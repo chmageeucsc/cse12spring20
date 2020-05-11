@@ -17,6 +17,11 @@ Lab3.asm
 This file includes the MARS file with the ASCII-risks (Asterisks) program.
 
 -
+oldLab.asm
+
+This file includes the MARS file from my old Lab3.asm. I restarted and the new and proper Lab3.asm was created.
+
+-
 pythonpseudocode.py
 
 This is the pseudocode for the lab in the python file.
