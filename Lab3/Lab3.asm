@@ -31,6 +31,7 @@ main:
     	# branch to patternLoop if input is greater than 0
     	sle $t0, $s0, $0 
     	beq $t0, $0, initialize
+    	nop
     	
     	# error
     	la $a0, error
@@ -59,6 +60,7 @@ main:
 
 	# RETURN TO START OF LOOP
 	b beginLoop
+	nop
 
 	# end of beginLoop	
 	
@@ -73,25 +75,26 @@ main:
     		# initialize $s5 as row+1
     		addi $s5, $s3, 1
     		
-    		#if row = useIn, move to outputText
+    		#if row = useIn + 1, move to outputText
     		beq $s3, $s4, outputText
-    		
-    		# set $s3 to $s7 (mirror = row)
-    		add $s7, $s3, $0
+    		nop
     		
     		# check each row
 		#addi $s3, $s3, 1
 		
 		b patternLoop
+		nop
 		
 	patternLoop: 
 	
-		
+		# reset rows
+		subi $s3, $s3, 1
 	
     		numLoop:
     			
     			#if col = row+1, move to starLoop
     			beq $s6, $s5, starLoop
+    			nop
     			
     			# print num 
  			la $a0, ($s1)
@@ -110,12 +113,18 @@ main:
  			# check next col
  			addi $s6, $s6, 1
  			
+ 			# if row = useIn, mirror numbers
+ 			beq $s3, $s0, numCont
+ 			nop
+ 			
  			b numLoop
+ 			nop
     			
     		starLoop:
     			
     			# while stars > 0
     			beq $s2, $0, numCont
+    			nop
     			
     			# print stars
  			la $a0, 0x2A
@@ -129,6 +138,7 @@ main:
  			subi $s2, $s2, 1
  			
  			b starLoop
+ 			nop
  			
  		numCont:
  			# useIn = useIn - 1  &  reset stars
@@ -142,9 +152,11 @@ main:
     			
     			# if mirror = 0, print new line and start next row
     			beq $s7, $0, nextRow
+    			nop
     			
     			# for loop of mirrored numbers
     			beq $s6, $s3, finNum
+    			nop
     			
     			# print mirror
  			la $a0, ($s7)
@@ -160,15 +172,20 @@ main:
  			# check next column
  			addi $s6, $s6, 1
  			
- 			b numCont
- 		
+ 			# if column = row, 
+ 			beq $s6, $s3, zero
+ 			
+ 			#b numCont
+ 			#nop 
+ 			
  		nextRow:
  			la $a0, newLine
  			li $v0, 4
  			syscall	
  			
  			addi $s3, $s3, 1
- 			b patternLoop
+ 			b initialize
+ 			nop
  					
  		finNum:
  			
@@ -182,11 +199,17 @@ main:
  			
  			# if col at row = row+1, move to outputText
  			addi $s3, $s3, 1
+ 			addi $s5, $s5, 1
  			beq $s6, $s5, outputText
-    	
+    			nop
+    			
     		#addi $s3, $s3, 1
     		b patternLoop #loop back
-    	
+    		nop
+    	zero:
+    		addi $s6, $0, 0
+    		b finNum
+    		
     	outputText:
     	
 		# Output the text
