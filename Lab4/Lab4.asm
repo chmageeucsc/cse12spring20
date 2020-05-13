@@ -16,7 +16,6 @@ main:
 		syscall
 			
 		print_loop:
-			beq $a1, 0x00000000, integer_values
 			
 			# space between arguments
 			li $v0, 4
@@ -25,6 +24,9 @@ main:
 			
 			# next address/ program argument
 			addi $a1, $a1, 4
+			
+			beq $a1, 0x7fffeffc, integer_values
+			
 			lw $a0 ($a1)
 			syscall
 			
