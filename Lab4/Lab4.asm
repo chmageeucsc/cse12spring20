@@ -1,3 +1,64 @@
+##########################################################################
+# Created by: Gee, Chantel
+# chmagee
+# 15 May 2020
+#
+# Assignment: Lab 4: Sorting Integers
+# CSE 12, Computer Systems and Assembly Language
+# UC Santa Cruz, Spring 2020
+#
+# Description: This program takes program arguments in hex, converts
+#		them into decimals, and sorts them.
+#
+# Notes: This program is intended to be run from the MARS IDE.
+#
+##########################################################################
+#
+# PSEUDOCODE
+# 
+# print "program arguments"
+# pa loop
+# if $a1 = 0, move on to integer values
+# else, print argument
+# store argument
+# check next argument - another pa loop
+# 
+# "integer values"
+# (ascii to hex)
+# check if first byte (after 0x) is letter or number
+# letter:
+# load byte
+# convert to hex value
+# store and shift to make space for next value
+# next byte - loop back to check
+# number:
+# load byte
+# convert to hex value
+# store and shift to make space for next value
+# next byte - loop back to check
+# 
+# repeat checks with next ascii/hex
+# 
+# (hex to int)
+# load byte (after 0x)
+# mult by 256 and store
+# next byte (if not null)
+# mult by 16 and store
+# next byte (if not null)
+# add byte and previous products and store
+# 
+# repeat with next hex/int
+# 
+# "sorted values"
+# sorting:
+# compare first stored value (a) to second (b)
+# if a > b, swap values
+# parse through all values until sorted
+# 
+# print out sorted values
+# 
+##########################################################################
+
 main:
 	program_arguments:
 		# prompt for "Program arguments"
