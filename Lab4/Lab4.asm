@@ -18,6 +18,9 @@ main:
 		syscall
 		
 		lw $s0, ($a1)
+		# shift to remove 0x
+		addi $s0, $s0, 2
+		move $t0, $s0
 						
 		# space between arguments
 		li $v0, 4
@@ -34,6 +37,9 @@ main:
 		syscall
 		
 		lw $s1, 4($a1)
+		# shift to remove 0x
+		addi $s1, $s1, 2
+		move $t1, $s1
 						
 		# space between arguments
 		li $v0, 4
@@ -50,6 +56,9 @@ main:
 		syscall
 		
 		lw $s2, 8($a1)
+		# shift to remove 0x
+		addi $s2, $s2, 2
+		move $t2, $s2
 						
 		# space between arguments
 		li $v0, 4
@@ -66,6 +75,9 @@ main:
 		syscall
 		
 		lw $s3, 12($a1)
+		# shift to remove 0x
+		addi $s3, $s3, 2
+		move $t3, $s3
 						
 		# space between arguments
 		li $v0, 4
@@ -82,6 +94,9 @@ main:
 		syscall
 		
 		lw $s4, 16($a1)
+		# shift to remove 0x
+		addi $s4, $s4, 2
+		move $t4, $s4
 						
 		# space between arguments
 		li $v0, 4
@@ -98,6 +113,9 @@ main:
 		syscall
 		
 		lw $s5, 20($a1)
+		# shift to remove 0x
+		addi $s5, $s5, 2
+		move $t5, $s5
 						
 		# space between arguments
 		li $v0, 4
@@ -114,6 +132,9 @@ main:
 		syscall
 		
 		lw $s6, 24($a1)
+		# shift to remove 0x
+		addi $s6, $s6, 2
+		move $t6, $s6
 						
 		# space between arguments
 		li $v0, 4
@@ -130,6 +151,9 @@ main:
 		syscall
 		
 		lw $s7, 28($a1)
+		# shift to remove 0x
+		addi $s7, $s7, 2
+		move $t7, $s7
 						
 		# space between arguments
 		li $v0, 4
