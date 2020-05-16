@@ -72,7 +72,7 @@ main:
 		syscall
 		
 		# print program arguements 1
-		beq $a1, $0, integer_values
+		beq $a1, $0, ascii_hex_1
 		
 		li $v0, 4
 		lw $a0, ($a1)
@@ -90,7 +90,7 @@ main:
 		
 		# print program arguements 2
 		addi $a1, $a1, 4
-		beq $a1, 0x7fffeffc, integer_values
+		beq $a1, 0x7fffeffc, ascii_hex_1
 		subi $a1, $a1, 4
 		
 		li $v0, 4
@@ -109,7 +109,7 @@ main:
 		
 		# print program arguements 3
 		addi $a1, $a1, 8
-		beq $a1, 0x7fffeffc, integer_values
+		beq $a1, 0x7fffeffc, ascii_hex_1
 		subi $a1, $a1, 8
 		
 		li $v0, 4
@@ -128,7 +128,7 @@ main:
 		
 		# print program arguements 4
 		addi $a1, $a1, 12
-		beq $a1, 0x7fffeffc, integer_values
+		beq $a1, 0x7fffeffc, ascii_hex_1
 		subi $a1, $a1, 12
 		
 		li $v0, 4
@@ -147,7 +147,7 @@ main:
 		
 		# print program arguements 5
 		addi $a1, $a1, 16
-		beq $a1, 0x7fffeffc, integer_values
+		beq $a1, 0x7fffeffc, ascii_hex_1
 		subi $a1, $a1, 16
 		
 		li $v0, 4
@@ -166,7 +166,7 @@ main:
 		
 		# print program arguements 6
 		addi $a1, $a1, 20
-		beq $a1, 0x7fffeffc, integer_values
+		beq $a1, 0x7fffeffc, ascii_hex_1
 		subi $a1, $a1, 20
 		
 		li $v0, 4
@@ -185,7 +185,7 @@ main:
 		
 		# print program arguements 7
 		addi $a1, $a1, 24
-		beq $a1, 0x7fffeffc, integer_values
+		beq $a1, 0x7fffeffc, ascii_hex_1
 		subi $a1, $a1, 24
 		
 		li $v0, 4
@@ -204,7 +204,7 @@ main:
 		
 		# print program arguements 8
 		addi $a1, $a1, 28
-		beq $a1, 0x7fffeffc, integer_values
+		beq $a1, 0x7fffeffc, ascii_hex_1
 		subi $a1, $a1, 28
 		
 		li $v0, 4
@@ -220,6 +220,340 @@ main:
 		li $v0, 4
 		la $a0, space
 		syscall	
+		
+	ascii_hex_1:
+		# load first byte from program arguments
+		lb $t8, 0($t0)
+		# if null, move on
+		beq $t8, 0, store1
+		# if greater than or equal to "A", go to letter
+		bge $t8, 065, letter1
+		nop
+		# else go to number
+		b number1
+		nop
+		
+		letter1:
+			# shift left to store bytes
+			sll $t9, $t9, 4
+			# subtract to get hex value
+			sub $t8, $t8, 55
+			# store value
+			add $t9, $t8, $t9
+			add $t0, $t0, 1
+			
+			b ascii_hex_1
+		
+		number1:
+			# shift left to store bytes
+			sll $t9, $t9, 4
+			# subtract to get hex value
+			sub $t8, $t8, 48
+			# store value
+			add $t9, $t8, $t9
+			add $t0, $t0, 1
+			
+			b ascii_hex_1
+		
+	store1: 
+		# s0 is in hex
+		add $s0, $0, $t9
+		# reset temporary values
+		add $t9, $0, $0
+			
+	ascii_hex_2:
+		# if no program arg, move on 
+		beq $t1, $0, integer_values
+		# load first byte from program arguments
+		lb $t8, 0($t1)
+		# if null, move on
+		beq $t8, 0, store2
+		# if greater than or equal to "A", go to letter
+		bge $t8, 065, letter2
+		nop
+		# else go to number
+		b number2
+		nop
+		
+		letter2:
+			# shift left to store bytes
+			sll $t9, $t9, 4
+			# subtract to get hex value
+			sub $t8, $t8, 55
+			# store value
+			add $t9, $t8, $t9
+			add $t1, $t1, 1
+			
+			b ascii_hex_2
+		
+		number2:
+			# shift left to store bytes
+			sll $t9, $t9, 4
+			# subtract to get hex value
+			sub $t8, $t8, 48
+			# store value
+			add $t9, $t8, $t9
+			add $t1, $t1, 1
+			
+			b ascii_hex_2
+			
+	store2: 
+		# s1 is in hex
+		add $s1, $0, $t9
+		# reset temporary values
+		add $t9, $0, $0
+				
+	ascii_hex_3:
+		# if no program arg, move on 
+		beq $t2, $0, integer_values
+		# load first byte from program arguments
+		lb $t8, 0($t2)
+		# if null, move on
+		beq $t8, 0, store3
+		# if greater than or equal to "A", go to letter
+		bge $t8, 065, letter3
+		nop
+		# else go to number
+		b number3
+		nop
+		
+		letter3:
+			# shift left to store bytes
+			sll $t9, $t9, 4
+			# subtract to get hex value
+			sub $t8, $t8, 55
+			# store value
+			add $t9, $t8, $t9
+			add $t2, $t2, 1
+			
+			b ascii_hex_3
+		
+		number3:
+			# shift left to store bytes
+			sll $t9, $t9, 4
+			# subtract to get hex value
+			sub $t8, $t8, 48
+			# store value
+			add $t9, $t8, $t9
+			add $t2, $t2, 1
+			
+			b ascii_hex_3
+			
+	store3: 
+		# s2 is in hex
+		add $s2, $0, $t9
+		# reset temporary values
+		add $t9, $0, $0
+	
+	ascii_hex_4:
+		# if no program arg, move on 
+		beq $t3, $0, integer_values
+		# load first byte from program arguments
+		lb $t8, 0($t3)
+		# if null, move on
+		beq $t8, 0, store4
+		# if greater than or equal to "A", go to letter
+		bge $t8, 065, letter4
+		nop
+		# else go to number
+		b number4
+		nop
+		
+		letter4:
+			# shift left to store bytes
+			sll $t9, $t9, 4
+			# subtract to get hex value
+			sub $t8, $t8, 55
+			# store value
+			add $t9, $t8, $t9
+			add $t3, $t3, 1
+			
+			b ascii_hex_4
+		
+		number4:
+			# shift left to store bytes
+			sll $t9, $t9, 4
+			# subtract to get hex value
+			sub $t8, $t8, 48
+			# store value
+			add $t9, $t8, $t9
+			add $t3, $t3, 1
+			
+			b ascii_hex_4
+			
+	store4: 
+		# s3 is in hex
+		add $s3, $0, $t9
+		# reset temporary values
+		add $t9, $0, $0
+	
+	ascii_hex_5:
+		# if no program arg, move on 
+		beq $t4, $0, integer_values
+		# load first byte from program arguments
+		lb $t8, 0($t4)
+		# if null, move on
+		beq $t8, 0, store5
+		# if greater than or equal to "A", go to letter
+		bge $t8, 065, letter5
+		nop
+		# else go to number
+		b number5
+		nop
+		
+		letter5:
+			# shift left to store bytes
+			sll $t9, $t9, 4
+			# subtract to get hex value
+			sub $t8, $t8, 55
+			# store value
+			add $t9, $t8, $t9
+			add $t4, $t4, 1
+			
+			b ascii_hex_5
+		
+		number5:
+			# shift left to store bytes
+			sll $t9, $t9, 4
+			# subtract to get hex value
+			sub $t8, $t8, 48
+			# store value
+			add $t9, $t8, $t9
+			add $t4, $t4, 1
+			
+			b ascii_hex_5
+			
+	store5: 
+		# s4 is in hex
+		add $s4, $0, $t9
+		# reset temporary values
+		add $t9, $0, $0
+		
+	ascii_hex_6:
+		# if no program arg, move on 
+		beq $t5, $0, integer_values
+		# load first byte from program arguments
+		lb $t8, 0($t5)
+		# if null, move on
+		beq $t8, 0, store6
+		# if greater than or equal to "A", go to letter
+		bge $t8, 065, letter6
+		nop
+		# else go to number
+		b number6
+		nop
+		
+		letter6:
+			# shift left to store bytes
+			sll $t9, $t9, 4
+			# subtract to get hex value
+			sub $t8, $t8, 55
+			# store value
+			add $t9, $t8, $t9
+			add $t5, $t5, 1
+			
+			b ascii_hex_6
+		
+		number6:
+			# shift left to store bytes
+			sll $t9, $t9, 4
+			# subtract to get hex value
+			sub $t8, $t8, 48
+			# store value
+			add $t9, $t8, $t9
+			add $t5, $t5, 1
+			
+			b ascii_hex_6
+			
+	store6: 
+		# s5 is in hex
+		add $s5, $0, $t9
+		# reset temporary values
+		add $t9, $0, $0
+		
+	ascii_hex_7:
+		# if no program arg, move on 
+		beq $t6, $0, integer_values
+		# load first byte from program arguments
+		lb $t8, 0($t6)
+		# if null, move on
+		beq $t8, 0, store7
+		# if greater than or equal to "A", go to letter
+		bge $t8, 065, letter7
+		nop
+		# else go to number
+		b number7
+		nop
+		
+		letter7:
+			# shift left to store bytes
+			sll $t9, $t9, 4
+			# subtract to get hex value
+			sub $t8, $t8, 55
+			# store value
+			add $t9, $t8, $t9
+			add $t6, $t6, 1
+			
+			b ascii_hex_7
+		
+		number7:
+			# shift left to store bytes
+			sll $t9, $t9, 4
+			# subtract to get hex value
+			sub $t8, $t8, 48
+			# store value
+			add $t9, $t8, $t9
+			add $t6, $t6, 1
+			
+			b ascii_hex_7
+			
+	store7: 
+		# s6 is in hex
+		add $s6, $0, $t9
+		# reset temporary values
+		add $t9, $0, $0
+		
+	ascii_hex_8:
+		# if no program arg, move on 
+		beq $t7, $0, integer_values
+		# load first byte from program arguments
+		lb $t8, 0($t7)
+		# if null, move on
+		beq $t8, 0, store8
+		# if greater than or equal to "A", go to letter
+		bge $t8, 065, letter8
+		nop
+		# else go to number
+		b number8
+		nop
+		
+		letter8:
+			# shift left to store bytes
+			sll $t9, $t9, 4
+			# subtract to get hex value
+			sub $t8, $t8, 55
+			# store value
+			add $t9, $t8, $t9
+			add $t7, $t7, 1
+			
+			b ascii_hex_8
+		
+		number8:
+			# shift left to store bytes
+			sll $t9, $t9, 4
+			# subtract to get hex value
+			sub $t8, $t8, 48
+			# store value
+			add $t9, $t8, $t9
+			add $t7, $t7, 1
+			
+			b ascii_hex_8
+			
+	store8: 
+		# s7 is in hex
+		add $s7, $0, $t9
+		# reset temporary values
+		add $t9, $0, $0
 		
 	integer_values:
 		# new line
