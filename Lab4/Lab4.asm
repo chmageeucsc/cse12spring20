@@ -1,7 +1,7 @@
 ##########################################################################
 # Created by: Gee, Chantel
 # chmagee
-# 15 May 2020
+# 16 May 2020
 #
 # Assignment: Lab 4: Sorting Integers
 # CSE 12, Computer Systems and Assembly Language
@@ -258,13 +258,18 @@ main:
 	store1: 
 		# s0 is in hex
 		add $s0, $0, $t9
+		
+		# store in stack
+		subi $sp, $sp, 4
+		sw $s0, 0($sp)
+		
 		# reset temporary values
 		add $t9, $0, $0
 		add $t8, $0, $0
-			
+		
 	ascii_hex_2:
 		# if no program arg, move on 
-		beq $t1, $0, hex_int_1
+		beq $t1, $0, exit
 		# load first byte from program arguments
 		lb $t8, 0($t1)
 		# if null, move on
@@ -301,13 +306,18 @@ main:
 	store2: 
 		# s1 is in hex
 		add $s1, $0, $t9
+		
+		# store in stack
+		subi $sp, $sp, 4
+		sw $s1, 0($sp)
+		
 		# reset temporary values
 		add $t9, $0, $0
 		add $t8, $0, $0
-				
+			
 	ascii_hex_3:
 		# if no program arg, move on 
-		beq $t2, $0, hex_int_1
+		beq $t2, $0, exit
 		# load first byte from program arguments
 		lb $t8, 0($t2)
 		# if null, move on
@@ -344,13 +354,18 @@ main:
 	store3: 
 		# s2 is in hex
 		add $s2, $0, $t9
+		
+		# store in stack
+		subi $sp, $sp, 4
+		sw $s2, 0($sp)
+		
 		# reset temporary values
 		add $t9, $0, $0
 		add $t8, $0, $0
 	
 	ascii_hex_4:
 		# if no program arg, move on 
-		beq $t3, $0, hex_int_1
+		beq $t3, $0, exit
 		# load first byte from program arguments
 		lb $t8, 0($t3)
 		# if null, move on
@@ -387,13 +402,18 @@ main:
 	store4: 
 		# s3 is in hex
 		add $s3, $0, $t9
+		
+		# store in stack
+		subi $sp, $sp, 4
+		sw $s3, 0($sp)
+		
 		# reset temporary values
 		add $t9, $0, $0
 		add $t8, $0, $0
 	
 	ascii_hex_5:
 		# if no program arg, move on 
-		beq $t4, $0, hex_int_1
+		beq $t4, $0, exit
 		# load first byte from program arguments
 		lb $t8, 0($t4)
 		# if null, move on
@@ -430,13 +450,18 @@ main:
 	store5: 
 		# s4 is in hex
 		add $s4, $0, $t9
+		
+		# store in stack
+		subi $sp, $sp, 4
+		sw $s4, 0($sp)
+		
 		# reset temporary values
 		add $t9, $0, $0
 		add $t8, $0, $0
 		
 	ascii_hex_6:
 		# if no program arg, move on 
-		beq $t5, $0, hex_int_1
+		beq $t5, $0, exit
 		# load first byte from program arguments
 		lb $t8, 0($t5)
 		# if null, move on
@@ -473,13 +498,18 @@ main:
 	store6: 
 		# s5 is in hex
 		add $s5, $0, $t9
+		
+		# store in stack
+		subi $sp, $sp, 4
+		sw $s5, 0($sp)
+		
 		# reset temporary values
 		add $t9, $0, $0
 		add $t8, $0, $0
 		
 	ascii_hex_7:
 		# if no program arg, move on 
-		beq $t6, $0, hex_int_1
+		beq $t6, $0, exit
 		# load first byte from program arguments
 		lb $t8, 0($t6)
 		# if null, move on
@@ -516,13 +546,18 @@ main:
 	store7: 
 		# s6 is in hex
 		add $s6, $0, $t9
+		
+		# store in stack
+		subi $sp, $sp, 4
+		sw $s6, 0($sp)
+		
 		# reset temporary values
 		add $t9, $0, $0
 		add $t8, $0, $0
 		
 	ascii_hex_8:
 		# if no program arg, move on 
-		beq $t7, $0, hex_int_1
+		beq $t7, $0, exit
 		# load first byte from program arguments
 		lb $t8, 0($t7)
 		# if null, move on
@@ -559,12 +594,14 @@ main:
 	store8: 
 		# s7 is in hex
 		add $s7, $0, $t9
+		
+		# store in stack
+		subi $sp, $sp, 4
+		sw $s7, 0($sp)
+		
 		# reset temporary values
 		add $t9, $0, $0
 		add $t8, $0, $0
-	
-	hex_int_1:
-		la $t8, ($s0)
 		
 	integer_values:
 		# new line
@@ -582,6 +619,68 @@ main:
 		la $a0, iv
 		syscall
 	
+		# new line
+		li $v0, 4
+		la $a0, newLine
+		syscall
+		
+		# print int 1 and space
+		li $v0, 1
+		move $a0, $s0
+		syscall
+		li $v0, 4
+		la $a0, space
+		syscall
+		# print int 2 and space
+		li $v0, 1
+		move $a0, $s1
+		syscall
+		li $v0, 4
+		la $a0, space
+		syscall
+		# print int 3 and space
+		li $v0, 1
+		move $a0, $s2
+		syscall
+		li $v0, 4
+		la $a0, space
+		syscall
+		# print int 4 and space
+		li $v0, 1
+		move $a0, $s3
+		syscall
+		li $v0, 4
+		la $a0, space
+		syscall
+		# print int 5 and space
+		li $v0, 1
+		move $a0, $s4
+		syscall
+		li $v0, 4
+		la $a0, space
+		syscall
+		# print int 6 and space
+		li $v0, 1
+		move $a0, $s5
+		syscall
+		li $v0, 4
+		la $a0, space
+		syscall
+		# print int 7 and space
+		li $v0, 1
+		move $a0, $s6
+		syscall
+		li $v0, 4
+		la $a0, space
+		syscall
+		# print int 8 and space
+		li $v0, 1
+		move $a0, $s7
+		syscall
+		li $v0, 4
+		la $a0, space
+		syscall
+		
 		# new line
 		li $v0, 4
 		la $a0, newLine
