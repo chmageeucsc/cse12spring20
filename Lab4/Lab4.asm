@@ -40,12 +40,7 @@
 # repeat checks with next ascii/hex
 # 
 # (hex to int)
-# load byte (after 0x)
-# mult by 256 and store
-# next byte (if not null)
-# mult by 16 and store
-# next byte (if not null)
-# add byte and previous products and store
+# use syscall 1 to print as int
 # 
 # repeat with next hex/int
 # 
@@ -701,7 +696,133 @@ main:
 		li $v0, 4
 		la $a0, newLine
 		syscall
-	
+		
+	sort_int:
+		bgt $s0, $s1, swap1
+		bgt $s1, $s2, swap2
+		bgt $s2, $s3, swap3		
+		bgt $s3, $s4, swap4
+		bgt $s4, $s5, swap5
+		bgt $s5, $s6, swap6
+		bgt $s6, $s7, swap7
+		
+		b sort_print
+		
+	swap1:
+		addi $t8, $s0, 0
+		addi $s0, $s1, 0
+		addi $s1, $t8, 0
+		
+		b sort_int
+		
+	swap2:
+		addi $t8, $s1, 0
+		addi $s1, $s2, 0
+		addi $s2, $t8, 0
+		
+		b sort_int
+		
+	swap3:
+		addi $t8, $s2, 0
+		addi $s2, $s3, 0
+		addi $s3, $t8, 0
+		
+		b sort_int
+		
+	swap4:
+		addi $t8, $s3, 0
+		addi $s3, $s4, 0
+		addi $s4, $t8, 0
+		
+		b sort_int
+		
+	swap5:
+		addi $t8, $s4, 0
+		addi $s4, $s5, 0
+		addi $s5, $t8, 0
+		
+		b sort_int
+		
+	swap6:
+		addi $t8, $s5, 0
+		addi $s5, $s6, 0
+		addi $s6, $t8, 0
+		
+		b sort_int
+		
+	swap7:
+		addi $t8, $s6, 0
+		addi $s6, $s7, 0
+		addi $s7, $t8, 0
+		
+		b sort_int
+		
+	sort_print:
+		la $a0, ($s0)
+	 	li $v0, 1
+ 		syscall
+ 		li $v0, 4
+		la $a0, space
+		syscall
+ 		
+ 		beqz $s1, exit
+ 		la $a0, ($s1)
+	 	li $v0, 1
+ 		syscall
+ 		li $v0, 4
+		la $a0, space
+		syscall
+ 		
+ 		beqz $s2, exit
+ 		la $a0, ($s2)
+	 	li $v0, 1
+ 		syscall
+ 		li $v0, 4
+		la $a0, space
+		syscall
+ 		
+ 		beqz $s3, exit
+ 		la $a0, ($s3)
+	 	li $v0, 1
+ 		syscall
+ 		li $v0, 4
+		la $a0, space
+		syscall
+ 		
+ 		beqz $s4, exit
+ 		la $a0, ($s4)
+	 	li $v0, 1
+ 		syscall
+ 		li $v0, 4
+		la $a0, space
+		syscall
+ 		
+ 		beqz $s5, exit
+ 		la $a0, ($s5)
+	 	li $v0, 1
+ 		syscall
+ 		li $v0, 4
+		la $a0, space
+		syscall
+ 		
+ 		beqz $s6, exit
+ 		la $a0, ($s6)
+	 	li $v0, 1
+ 		syscall
+ 		li $v0, 4
+		la $a0, space
+		syscall
+ 		
+ 		beqz $s7, exit
+ 		la $a0, ($s7)
+	 	li $v0, 1
+ 		syscall
+		
+		# new line
+		li $v0, 4
+		la $a0, newLine
+		syscall
+		
 exit:
 	# exit the program
 	li $v0, 10
