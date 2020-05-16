@@ -227,7 +227,7 @@ main:
 		# if null, move on
 		beq $t8, 0, store1
 		# if greater than or equal to "A", go to letter
-		bge $t8, 065, letter1
+		bge $t8, 0x041, letter1
 		nop
 		# else go to number
 		b number1
@@ -260,16 +260,17 @@ main:
 		add $s0, $0, $t9
 		# reset temporary values
 		add $t9, $0, $0
+		add $t8, $0, $0
 			
 	ascii_hex_2:
 		# if no program arg, move on 
-		beq $t1, $0, integer_values
+		beq $t1, $0, hex_int_1
 		# load first byte from program arguments
 		lb $t8, 0($t1)
 		# if null, move on
 		beq $t8, 0, store2
 		# if greater than or equal to "A", go to letter
-		bge $t8, 065, letter2
+		bge $t8, 0x041, letter2
 		nop
 		# else go to number
 		b number2
@@ -302,16 +303,17 @@ main:
 		add $s1, $0, $t9
 		# reset temporary values
 		add $t9, $0, $0
+		add $t8, $0, $0
 				
 	ascii_hex_3:
 		# if no program arg, move on 
-		beq $t2, $0, integer_values
+		beq $t2, $0, hex_int_1
 		# load first byte from program arguments
 		lb $t8, 0($t2)
 		# if null, move on
 		beq $t8, 0, store3
 		# if greater than or equal to "A", go to letter
-		bge $t8, 065, letter3
+		bge $t8, 0x041, letter3
 		nop
 		# else go to number
 		b number3
@@ -344,16 +346,17 @@ main:
 		add $s2, $0, $t9
 		# reset temporary values
 		add $t9, $0, $0
+		add $t8, $0, $0
 	
 	ascii_hex_4:
 		# if no program arg, move on 
-		beq $t3, $0, integer_values
+		beq $t3, $0, hex_int_1
 		# load first byte from program arguments
 		lb $t8, 0($t3)
 		# if null, move on
 		beq $t8, 0, store4
 		# if greater than or equal to "A", go to letter
-		bge $t8, 065, letter4
+		bge $t8, 0x041, letter4
 		nop
 		# else go to number
 		b number4
@@ -386,16 +389,17 @@ main:
 		add $s3, $0, $t9
 		# reset temporary values
 		add $t9, $0, $0
+		add $t8, $0, $0
 	
 	ascii_hex_5:
 		# if no program arg, move on 
-		beq $t4, $0, integer_values
+		beq $t4, $0, hex_int_1
 		# load first byte from program arguments
 		lb $t8, 0($t4)
 		# if null, move on
 		beq $t8, 0, store5
 		# if greater than or equal to "A", go to letter
-		bge $t8, 065, letter5
+		bge $t8, 0x041, letter5
 		nop
 		# else go to number
 		b number5
@@ -428,16 +432,17 @@ main:
 		add $s4, $0, $t9
 		# reset temporary values
 		add $t9, $0, $0
+		add $t8, $0, $0
 		
 	ascii_hex_6:
 		# if no program arg, move on 
-		beq $t5, $0, integer_values
+		beq $t5, $0, hex_int_1
 		# load first byte from program arguments
 		lb $t8, 0($t5)
 		# if null, move on
 		beq $t8, 0, store6
 		# if greater than or equal to "A", go to letter
-		bge $t8, 065, letter6
+		bge $t8, 0x041, letter6
 		nop
 		# else go to number
 		b number6
@@ -470,16 +475,17 @@ main:
 		add $s5, $0, $t9
 		# reset temporary values
 		add $t9, $0, $0
+		add $t8, $0, $0
 		
 	ascii_hex_7:
 		# if no program arg, move on 
-		beq $t6, $0, integer_values
+		beq $t6, $0, hex_int_1
 		# load first byte from program arguments
 		lb $t8, 0($t6)
 		# if null, move on
 		beq $t8, 0, store7
 		# if greater than or equal to "A", go to letter
-		bge $t8, 065, letter7
+		bge $t8, 0x041, letter7
 		nop
 		# else go to number
 		b number7
@@ -512,16 +518,17 @@ main:
 		add $s6, $0, $t9
 		# reset temporary values
 		add $t9, $0, $0
+		add $t8, $0, $0
 		
 	ascii_hex_8:
 		# if no program arg, move on 
-		beq $t7, $0, integer_values
+		beq $t7, $0, hex_int_1
 		# load first byte from program arguments
 		lb $t8, 0($t7)
 		# if null, move on
 		beq $t8, 0, store8
 		# if greater than or equal to "A", go to letter
-		bge $t8, 065, letter8
+		bge $t8, 0x041, letter8
 		nop
 		# else go to number
 		b number8
@@ -554,6 +561,10 @@ main:
 		add $s7, $0, $t9
 		# reset temporary values
 		add $t9, $0, $0
+		add $t8, $0, $0
+	
+	hex_int_1:
+		la $t8, ($s0)
 		
 	integer_values:
 		# new line
