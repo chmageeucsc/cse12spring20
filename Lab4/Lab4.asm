@@ -264,7 +264,7 @@ main:
 		
 	ascii_hex_2:
 		# if no program arg, move on 
-		beq $t1, $0, exit
+		beq $t1, $0, integer_values
 		# load first byte from program arguments
 		lb $t8, 0($t1)
 		# if null, move on
@@ -312,7 +312,7 @@ main:
 			
 	ascii_hex_3:
 		# if no program arg, move on 
-		beq $t2, $0, exit
+		beq $t2, $0, integer_values
 		# load first byte from program arguments
 		lb $t8, 0($t2)
 		# if null, move on
@@ -360,7 +360,7 @@ main:
 	
 	ascii_hex_4:
 		# if no program arg, move on 
-		beq $t3, $0, exit
+		beq $t3, $0, integer_values
 		# load first byte from program arguments
 		lb $t8, 0($t3)
 		# if null, move on
@@ -408,7 +408,7 @@ main:
 	
 	ascii_hex_5:
 		# if no program arg, move on 
-		beq $t4, $0, exit
+		beq $t4, $0, integer_values
 		# load first byte from program arguments
 		lb $t8, 0($t4)
 		# if null, move on
@@ -456,7 +456,7 @@ main:
 		
 	ascii_hex_6:
 		# if no program arg, move on 
-		beq $t5, $0, exit
+		beq $t5, $0, integer_values
 		# load first byte from program arguments
 		lb $t8, 0($t5)
 		# if null, move on
@@ -504,7 +504,7 @@ main:
 		
 	ascii_hex_7:
 		# if no program arg, move on 
-		beq $t6, $0, exit
+		beq $t6, $0, integer_values
 		# load first byte from program arguments
 		lb $t8, 0($t6)
 		# if null, move on
@@ -552,7 +552,7 @@ main:
 		
 	ascii_hex_8:
 		# if no program arg, move on 
-		beq $t7, $0, exit
+		beq $t7, $0, integer_values
 		# load first byte from program arguments
 		lb $t8, 0($t7)
 		# if null, move on
@@ -626,6 +626,8 @@ main:
 		li $v0, 4
 		la $a0, space
 		syscall
+		
+		beqz $s1, iv_sv
 		# print int 2 and space
 		li $v0, 1
 		move $a0, $s1
@@ -633,6 +635,8 @@ main:
 		li $v0, 4
 		la $a0, space
 		syscall
+		
+		beqz $s2, iv_sv
 		# print int 3 and space
 		li $v0, 1
 		move $a0, $s2
@@ -640,6 +644,8 @@ main:
 		li $v0, 4
 		la $a0, space
 		syscall
+		
+		beqz $s3, iv_sv
 		# print int 4 and space
 		li $v0, 1
 		move $a0, $s3
@@ -647,6 +653,8 @@ main:
 		li $v0, 4
 		la $a0, space
 		syscall
+		
+		beqz $s4, iv_sv
 		# print int 5 and space
 		li $v0, 1
 		move $a0, $s4
@@ -654,6 +662,8 @@ main:
 		li $v0, 4
 		la $a0, space
 		syscall
+		
+		beqz $s5, iv_sv
 		# print int 6 and space
 		li $v0, 1
 		move $a0, $s5
@@ -661,6 +671,8 @@ main:
 		li $v0, 4
 		la $a0, space
 		syscall
+		
+		beqz $s6, iv_sv
 		# print int 7 and space
 		li $v0, 1
 		move $a0, $s6
@@ -668,6 +680,8 @@ main:
 		li $v0, 4
 		la $a0, space
 		syscall
+		
+		beqz $s7, iv_sv
 		# print int 8 and space
 		li $v0, 1
 		move $a0, $s7
@@ -676,6 +690,7 @@ main:
 		la $a0, space
 		syscall
 		
+	iv_sv:	
 		# new line
 		li $v0, 4
 		la $a0, newLine
@@ -685,8 +700,9 @@ main:
 		li $v0, 4
 		la $a0, newLine
 		syscall
-	
+		
 	sorted_values:
+	
 		# print "Sorted values"
 		li $v0, 4
 		la $a0, sv
@@ -698,9 +714,10 @@ main:
 		syscall
 		
 	sort_int:
+
 		bgt $s0, $s1, swap1
 		bgt $s1, $s2, swap2
-		bgt $s2, $s3, swap3		
+		bgt $s2, $s3, swap3
 		bgt $s3, $s4, swap4
 		bgt $s4, $s5, swap5
 		bgt $s5, $s6, swap6
@@ -758,6 +775,8 @@ main:
 		b sort_int
 		
 	sort_print:
+		sort1:
+		beqz $s0, sort2
 		la $a0, ($s0)
 	 	li $v0, 1
  		syscall
@@ -765,7 +784,8 @@ main:
 		la $a0, space
 		syscall
  		
- 		beqz $s1, exit
+ 		sort2:
+ 		beqz $s1, sort3
  		la $a0, ($s1)
 	 	li $v0, 1
  		syscall
@@ -773,7 +793,8 @@ main:
 		la $a0, space
 		syscall
  		
- 		beqz $s2, exit
+ 		sort3:
+ 		beqz $s2, sort4
  		la $a0, ($s2)
 	 	li $v0, 1
  		syscall
@@ -781,7 +802,8 @@ main:
 		la $a0, space
 		syscall
  		
- 		beqz $s3, exit
+ 		sort4:
+ 		beqz $s3, sort5
  		la $a0, ($s3)
 	 	li $v0, 1
  		syscall
@@ -789,15 +811,17 @@ main:
 		la $a0, space
 		syscall
  		
- 		beqz $s4, exit
+ 		sort5:
+ 		beqz $s4, sort6
  		la $a0, ($s4)
 	 	li $v0, 1
  		syscall
  		li $v0, 4
 		la $a0, space
 		syscall
- 		
- 		beqz $s5, exit
+		
+ 		sort6:
+ 		beqz $s5, sort7
  		la $a0, ($s5)
 	 	li $v0, 1
  		syscall
@@ -805,7 +829,8 @@ main:
 		la $a0, space
 		syscall
  		
- 		beqz $s6, exit
+ 		sort7:
+ 		beqz $s6, sort8
  		la $a0, ($s6)
 	 	li $v0, 1
  		syscall
@@ -813,6 +838,7 @@ main:
 		la $a0, space
 		syscall
  		
+ 		sort8:
  		beqz $s7, exit
  		la $a0, ($s7)
 	 	li $v0, 1
