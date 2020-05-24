@@ -1,15 +1,31 @@
-#Spring20 Lab5 Template File
+##########################################################################
+# Created by: Gee, Chantel
+# chmagee
+# 24 May 2020
+#
+# Assignment: Lab 5: Functions and Graphics
+# CSE 12, Computer Systems and Assembly Language
+# UC Santa Cruz, Spring 2020
+#
+# Description: This program will implement functions that perform
+# 	some primitive graphics operations on a small simulated display.
+#
+# Notes: This program is intended to be run from the MARS IDE.
+#
+##########################################################################
 
 # Macro that stores the value in %reg on the stack 
 #  and moves the stack pointer.
 .macro push(%reg)
-
+	subi $sp $sp 4
+	sw %reg 0($sp)
 .end_macro 
 
 # Macro takes the value on the top of the stack and 
 #  loads it into %reg then moves the stack pointer.
 .macro pop(%reg)
-
+	lw %reg 0($sp)
+	addi $sp $sp 4
 .end_macro
 
 # Macro that takes as input coordinates in the format
