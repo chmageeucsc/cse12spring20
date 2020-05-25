@@ -32,14 +32,15 @@
 # (0x00XX00YY) and returns 0x000000XX in %x and 
 # returns 0x000000YY in %y
 .macro getCoordinates(%input %x %y)
-
+	srl %x %input 16
+	sll %y %input 16
+	srl %y %y 16
 .end_macro
 
-# Macro that takes Coordinates in (%x,%y) where
-# %x = 0x000000XX and %y= 0x000000YY and
-# returns %output = (0x00XX00YY)
 .macro formatCoordinates(%output %x %y)
-
+	add %output $0 %x
+	sll %output %output 16
+	add %output %output %y
 .end_macro 
 
 
