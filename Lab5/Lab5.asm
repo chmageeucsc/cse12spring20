@@ -67,7 +67,22 @@ j done
 #    Colors the Bitmap display all the same color
 #*****************************************************
 clear_bitmap: nop
-	
+	push($ra)
+	push($s0)
+	push($t0)
+	lw $s0 originAddress
+	lw $t0 0xfffffffc
+	cb_loop:
+		beq $s0 $t0 cb_loop_end
+		push($s0)
+		sw $a0, ($s0)
+		pop($s0)
+		addi $s0 $s0 4
+		b cb_loop
+	cb_loop_end:
+	pop($t0)
+	pop($s0)
+	pop($ra)
 	jr $ra
 	
 #*****************************************************
@@ -82,7 +97,9 @@ clear_bitmap: nop
 #    No register outputs
 #*****************************************************
 draw_pixel: nop
+	push($ra)
 	
+	pop($ra)
 	jr $ra
 	
 #*****************************************************
@@ -95,7 +112,9 @@ draw_pixel: nop
 #    Returns pixel color in $v0 in format (0x00RRGGBB)
 #*****************************************************
 get_pixel: nop
+	push($ra)
 	
+	pop($ra)
 	jr $ra
 
 #***********************************************
@@ -124,7 +143,9 @@ get_pixel: nop
 #    No register outputs
 #***************************************************
 draw_solid_circle: nop
+	push($ra)
 	
+	pop($ra)
 	jr $ra
 		
 #***********************************************
@@ -155,7 +176,9 @@ draw_solid_circle: nop
 #    No register outputs
 #***************************************************
 draw_circle: nop
+	push($ra)
 	
+	pop($ra)
 	jr $ra
 	
 #*****************************************************
@@ -182,5 +205,7 @@ draw_circle: nop
 #    No register outputs	
 #*****************************************************
 draw_circle_pixels: nop
+	push($ra)
 	
+	pop($ra)
 	jr $ra
