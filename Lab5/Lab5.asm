@@ -69,18 +69,18 @@ j done
 clear_bitmap: nop
 	push($ra)
 	push($s0)
-	push($t0)
+	push($s1)
 	lw $s0 originAddress
-	lw $t0 0xfffffffc
+	lw $s1 0xfffffffc
 	cb_loop:
-		beq $s0 $t0 cb_loop_end
+		beq $s0 $s1 cb_loop_end
 		push($s0)
 		sw $a0, ($s0)
 		pop($s0)
 		addi $s0 $s0 4
 		b cb_loop
 	cb_loop_end:
-	pop($t0)
+	pop($s1)
 	pop($s0)
 	pop($ra)
 	jr $ra
@@ -98,7 +98,28 @@ clear_bitmap: nop
 #*****************************************************
 draw_pixel: nop
 	push($ra)
-	
+	push($a0)
+	push($a1)
+	push($s0)
+	push($s1)
+	push($s2)
+	push($s3)
+	push($s4)
+	la $s0 ($a0)
+	getCoordinates($s0, $s1, $s2)
+	mul $s3 $s2 128
+	add $s3 $s3 $s1
+	mul $s3 $s3 4
+	lw $s4 originAddress
+	add $s4 $s4 $s3
+	sw $a1 ($s4)
+	pop($s4)
+	pop($s3)
+	pop($s2)
+	pop($s1)
+	pop($s0)
+	pop($a1)
+	pop($a0)
 	pop($ra)
 	jr $ra
 	
