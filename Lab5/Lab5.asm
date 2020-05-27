@@ -134,7 +134,26 @@ draw_pixel: nop
 #*****************************************************
 get_pixel: nop
 	push($ra)
-	
+	push($a0)
+	push($s0)
+	push($s1)
+	push($s2)
+	push($s3)
+	push($s4)
+	la $s0 ($a0)
+	getCoordinates($s0, $s1, $s2)
+	mul $s3 $s2 128
+	add $s3 $s3 $s1
+	mul $s3 $s3 4
+	lw $s4 originAddress
+	add $s4 $s4 $s3
+	lw $v0, ($s4)
+	pop($s4)
+	pop($s3)
+	pop($s2)
+	pop($s1)
+	pop($s0)
+	pop($a0)
 	pop($ra)
 	jr $ra
 
