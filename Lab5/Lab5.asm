@@ -13,6 +13,44 @@
 # Notes: This program is intended to be run from the MARS IDE.
 #
 ##########################################################################
+#
+# PSUEDOCODE for functions
+#
+# clear_bitmap
+# push all s registers used in function
+# load the originAddress into $s0
+# load the max address (0xfffffffc) into $s1
+# loop through and store the color ($a0) into
+# every address from $s0 to $s1
+# pop all s registers used in function
+#-----------------------------------------------------------
+# draw_pixel
+# push all s registers used in function
+# load coordinates into $s0
+# getCoordinates and load into $s1 and $s2
+# do the math to find the corresponding spot
+# in the array ($s3)
+# load the originAddress into $s4
+# add $s4 and $s3 to correct spot in array
+# pop all s registers used in function
+#-----------------------------------------------------------
+# get_pixel
+# push all s registers used in function
+# load coordinates into $s0
+# getCoordinates and load into $s1 and $s2
+# do the math to find the corresponding spot
+# in the array ($s3)
+# load the originAddress into $s4
+# add $s4 and $s3 to correct spot in array 
+# load s4 into $v0
+# pop all s registers used in function
+#-----------------------------------------------------------
+# draw_solid_circle
+#-----------------------------------------------------------
+# draw_circle
+#-----------------------------------------------------------
+# draw_circle_pixels
+#-----------------------------------------------------------
 
 # Macro that stores the value in %reg on the stack 
 #  and moves the stack pointer.
@@ -37,6 +75,9 @@
 	srl %y %y 16
 .end_macro
 
+# Macro that takes Coordinates in (%x,%y) where
+# %x = 0x000000XX and %y= 0x000000YY and
+# returns %output = (0x00XX00YY)
 .macro formatCoordinates(%output %x %y)
 	add %output $0 %x
 	sll %output %output 16
@@ -184,7 +225,70 @@ get_pixel: nop
 #***************************************************
 draw_solid_circle: nop
 	push($ra)
+	push($a0)
+	push($a1)
+	push($a2)
+	push($s0)
+	push($s1)
+	push($s2)
+	push($s4)
+	push($s5)
+	push($s6)
+	push($s7)
+	la $s0, ($a0)
+	getCoordinates($s0, $s1, $s2)
+	sub $s4, $s1, $a1		# xmin
+	add $s5, $s1, $a1		# xmax
+	sub $s6, $s2, $a1		# ymin
+	add $s7, $s2, $a1		# ymax
+	mul $t3, $a1, $a1
+	forx:
+		bgt $s4, $s5 end_dsc
+		fory:
+			bgt $s6, $s7, forx1		# if ymin > ymax, start next for x loop
+			sub $t0, $s4, $s1		# $t0 = (xmin - xc)^2
+			mul $t0, $t0, $t0
+			sub $t1, $s6, $s2		# $t1 = (ymin - yc)^2
+			mul $t1, $t1, $t1
+			add $t2, $t0, $t1		# $t2 (or a) = (xmin - xc)^2 + (ymin - yc)^2
+			blt $t2, $t3, dp		# if a < r^2, draw pixel
+			addi $s4, $s4, 1
+			b fory
+				
 	
+	forx1:
+		add $s6, $0, $0		# reset counter for fory loop
+		b forx	
+		
+		dp:
+			push($a1)
+			la $a1, ($a2)
+			push($ra)
+			push($s0)
+			push($s4)
+			push($s6)
+			formatCoordinates($s0, $s4, $s6)
+			jal draw_pixel
+			pop($s6)
+			pop($s4)
+			pop($s0)
+			pop($ra)
+			addi $s6, $s6, 1
+			pop($a1)
+			b fory
+		
+	end_dsc:
+	add $s4, $0, $0			# reset counter for forx loop (just in case)
+	pop($s7)
+	pop($s6)
+	pop($s5)
+	pop($s4)
+	pop($s2)
+	pop($s1)
+	pop($s0)
+	pop($a2)
+	pop($a1)
+	pop($a0)
 	pop($ra)
 	jr $ra
 		
