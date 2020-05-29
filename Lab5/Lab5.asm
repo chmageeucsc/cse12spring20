@@ -330,7 +330,36 @@ draw_solid_circle: nop
 #***************************************************
 draw_circle: nop
 	push($ra)
-	
+	push($s5)
+	push($s6)
+	push($s7)
+	add $s5 $0 $0		# x = 0
+	add $s6 $0 $a1		# y = r
+	mul $t9 $s6 2
+	addi $t8 $0 3
+	sub $s7 $t8 $t9		# d = 3 - 2 * r
+	# insert draw circle pixels here
+	while_yx:
+		blt $s6 $s5 end_dc
+		addi $s5 $s5 1
+		while_if:
+			ble $s7 $0 while_else
+			subi $s6 $s6 1
+			sub $t7 $s5 $s6
+			mul $t7 $t7 4
+			add $s7 $s7 $t7
+			addi $s7 $s7 10
+			b while_yx
+		while_else:
+			mul $t7 $s5 4
+			add $s7 $s7 $t7
+			addi $s7 $s7 6
+			b while_yx
+	end_dc:
+		# insert draw circle pixels here
+	pop($s7)
+	pop($s6)
+	pop($s5)
 	pop($ra)
 	jr $ra
 	
