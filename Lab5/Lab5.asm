@@ -242,6 +242,8 @@ draw_solid_circle: nop
 	sub $s6, $s2, $a1		# ymin
 	add $s7, $s2, $a1		# ymax
 	mul $t3, $a1, $a1
+	add $t4, $0, $s4		# original xmin
+	add $t5, $0, $s6		# original ymin
 	forx:
 		bgt $s4, $s5 end_dsc
 		fory:
@@ -252,29 +254,36 @@ draw_solid_circle: nop
 			mul $t1, $t1, $t1
 			add $t2, $t0, $t1		# $t2 (or a) = (xmin - xc)^2 + (ymin - yc)^2
 			blt $t2, $t3, dp		# if a < r^2, draw pixel
-			addi $s4, $s4, 1
+			addi $s6, $s6, 1
 			b fory
 				
 	
 	forx1:
-		add $s6, $0, $0		# reset counter for fory loop
+		addi $s4 $s4 1
+		add $s6, $0, $t5		# reset counter for fory loop
 		b forx	
 		
 		dp:
+			addi $s6 $s6 1
+			push($a0)
 			push($a1)
 			la $a1, ($a2)
 			push($ra)
 			push($s0)
+			push($s1)
+			push($s2)
 			push($s4)
 			push($s6)
-			formatCoordinates($s0, $s4, $s6)
+			formatCoordinates($a0, $s4, $s6)
 			jal draw_pixel
 			pop($s6)
 			pop($s4)
+			pop($s2)
+			pop($s1)
 			pop($s0)
 			pop($ra)
-			addi $s6, $s6, 1
 			pop($a1)
+			pop($a0)
 			b fory
 		
 	end_dsc:
