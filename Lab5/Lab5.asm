@@ -340,29 +340,43 @@ draw_circle: nop
 	addi $t8 $0 3
 	sub $s7 $t8 $t9		# d = 3 - 2 * r
 	push($a1)
+	push($a2)
+	push($a3)
 	la $a1, ($a2)
+	move $a2 $s5
+	move $a3 $s6
 	jal draw_circle_pixels
+	pop($a3)
+	pop($a2)
 	pop($a1)
 	while_yx:
 		blt $s6 $s5 end_dc
 		while_if:
 			ble $s7 $0 while_else
 			subi $s6 $s6 1
-			sub $t6 $s5 $s6
-			mul $t6 $t6 4
-			add $t6 $t6 $s7
-			addi $t6 $t6 10
+			sub $t7 $s5 $s6
+			mul $t7 $t7 4
+			add $s7 $s7 $t7
+			addi $s7 $s7 10
 			b dc
 		while_else:
-			mul $t6 $s5 4
-			add $t6 $t6 $s7
-			addi $t6 $t6 6
+			mul $t7 $s5 4
+			add $s7 $s7 $t7
+			addi $s7 $s7 6
 			b dc
 	dc:
+		push($a0)
 		push($a1)
+		push($a2)
+		push($a3)
 		la $a1, ($a2)
+		move $a2 $s5
+		move $a3 $s6
 		jal draw_circle_pixels
+		pop($a3)
+		pop($a2)
 		pop($a1)
+		pop($a0)
 		addi $s5 $s5 1
 		b while_yx
 	end_dc:
@@ -405,8 +419,8 @@ draw_circle_pixels: nop
 	push($s2)
 	push($s5)
 	push($s6)
-	add $a2 $0 $0		# x = 0
-	add $a3 $0 $s6		# y = r
+	#add $a2 $0 $0		# x = 0
+	#add $a3 $0 $s6		# y = r
 	la $s0, ($a0)
 	getCoordinates($s0, $s1, $s2)
 	add $t0 $a2 $s1
@@ -476,7 +490,7 @@ draw_circle_pixels: nop
 	sub $t1 $s2 $a2
 	push($a0)
 	add $a0 $0 $0
-	formatCoordinates($a0, $t6, $t7)
+	formatCoordinates($a0, $t0, $t1)
 	push($ra)
 	jal draw_pixel
 	pop($a0)
