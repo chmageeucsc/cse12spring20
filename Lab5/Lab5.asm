@@ -1,7 +1,7 @@
 ##########################################################################
 # Created by: Gee, Chantel
 # chmagee
-# 24 May 2020
+# 29 May 2020
 #
 # Assignment: Lab 5: Functions and Graphics
 # CSE 12, Computer Systems and Assembly Language
@@ -330,36 +330,48 @@ draw_solid_circle: nop
 #***************************************************
 draw_circle: nop
 	push($ra)
+	push($a1)
 	push($s5)
 	push($s6)
 	push($s7)
-	add $s5 $0 $0		# x = 0
-	add $s6 $0 $a1		# y = r
+	add $s5 $0 $0		# x = 0 ($s5)
+	add $s6 $0 $a1		# y = r ($s6)
 	mul $t9 $s6 2
 	addi $t8 $0 3
 	sub $s7 $t8 $t9		# d = 3 - 2 * r
-	# insert draw circle pixels here
+	push($a1)
+	la $a1, ($a2)
+	jal draw_circle_pixels
+	pop($a1)
 	while_yx:
 		blt $s6 $s5 end_dc
-		addi $s5 $s5 1
 		while_if:
 			ble $s7 $0 while_else
 			subi $s6 $s6 1
-			sub $t7 $s5 $s6
-			mul $t7 $t7 4
-			add $s7 $s7 $t7
-			addi $s7 $s7 10
-			b while_yx
+			sub $t6 $s5 $s6
+			mul $t6 $t6 4
+			add $t6 $t6 $s7
+			addi $t6 $t6 10
+			b dc
 		while_else:
-			mul $t7 $s5 4
-			add $s7 $s7 $t7
-			addi $s7 $s7 6
-			b while_yx
+			mul $t6 $s5 4
+			add $t6 $t6 $s7
+			addi $t6 $t6 6
+			b dc
+	dc:
+		push($a1)
+		la $a1, ($a2)
+		jal draw_circle_pixels
+		pop($a1)
+		addi $s5 $s5 1
+		b while_yx
 	end_dc:
-		# insert draw circle pixels here
 	pop($s7)
 	pop($s6)
 	pop($s5)
+	pop($a1)
+	
+
 	pop($ra)
 	jr $ra
 	
@@ -388,6 +400,91 @@ draw_circle: nop
 #*****************************************************
 draw_circle_pixels: nop
 	push($ra)
-	
+	push($s0)
+	push($s1)
+	push($s2)
+	push($s5)
+	push($s6)
+	add $a2 $0 $0		# x = 0
+	add $a3 $0 $s6		# y = r
+	la $s0, ($a0)
+	getCoordinates($s0, $s1, $s2)
+	add $t0 $a2 $s1
+	add $t1 $a3 $s2
+	push($a0)
+	add $a0 $0 $0
+	formatCoordinates($a0, $t0, $t1)
+	push($ra)
+	jal draw_pixel
+	pop($a0)
+	pop($ra)
+	sub $t2 $s1 $a2
+	add $t3 $s2 $a3
+	push($a0)
+	add $a0 $0 $0
+	formatCoordinates($a0, $t2, $t3)
+	push($ra)
+	jal draw_pixel
+	pop($a0)
+	pop($ra)
+	add $t4 $s1 $a2
+	sub $t5 $s2 $a3
+	push($a0)
+	add $a0 $0 $0
+	formatCoordinates($a0, $t4, $t5)
+	push($ra)
+	jal draw_pixel
+	pop($a0)
+	pop($ra)
+	sub $t6 $s1 $a2
+	sub $t7 $s2 $a3
+	push($a0)
+	add $a0 $0 $0
+	formatCoordinates($a0, $t6, $t7)
+	push($ra)
+	jal draw_pixel
+	pop($a0)
+	pop($ra)
+	add $t0 $s1 $a3
+	add $t1 $s2 $a2
+	push($a0)
+	add $a0 $0 $0
+	formatCoordinates($a0, $t0, $t1)
+	push($ra)
+	jal draw_pixel
+	pop($a0)
+	pop($ra)
+	sub $t2 $s1 $a3
+	add $t3 $s2 $a2
+	push($a0)
+	add $a0 $0 $0
+	formatCoordinates($a0, $t2, $t3)
+	push($ra)
+	jal draw_pixel
+	pop($a0)
+	pop($ra)
+	add $t4 $s1 $a3
+	sub $t5 $s2 $a2
+	push($a0)
+	add $a0 $0 $0
+	formatCoordinates($a0, $t4, $t5)
+	push($ra)
+	jal draw_pixel
+	pop($a0)
+	pop($ra)
+	sub $t0 $s1 $a3
+	sub $t1 $s2 $a2
+	push($a0)
+	add $a0 $0 $0
+	formatCoordinates($a0, $t6, $t7)
+	push($ra)
+	jal draw_pixel
+	pop($a0)
+	pop($ra)
+	pop($s6)
+	pop($s5)
+	pop($s2)
+	pop($s1)
+	pop($s0)
 	pop($ra)
 	jr $ra
